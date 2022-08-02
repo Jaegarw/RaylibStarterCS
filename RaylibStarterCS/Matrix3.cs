@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Numerics;
-using MathClasses;
+using System.Threading.Tasks;
+
+
+
 
 namespace MathClasses
 {
+   
     public class Matrix3
     {
-        public float m01, m02, m03;
-        public float m11, m12, m13;
-        public float m21, m22, m23;
+        public float m00, m01, m02;
+        public float m10, m11, m12;
+        public float m20, m21, m22;
 
         public Matrix3()
+        {
+
+        }
+        public Matrix3(int mI)
         {
 
         }
@@ -22,98 +30,160 @@ namespace MathClasses
             float m4, float m5, float m6,
             float m7, float m8, float m9)
         {
-            m01 = m1;
-            m02 = m2;
-            m03 = m3;
-            m11 = m4;
-            m12 = m5;
-            m13 = m6;
-            m21 = m7;
-            m22 = m8;
-            m23 = m9;
+            m00 = m1;
+            m01 = m2;
+            m02 = m3;
+            m10 = m4;
+            m11 = m5;
+            m12 = m6;
+            m20 = m7;
+            m21 = m8;
+            m22 = m9;
         }
-        //maybe simplify this?
+
+        public float X
+        {
+            get => m20;
+        }
+        public float Y
+        {
+            get => m21;
+        }
+        public Vector3 Forward
+        {
+            get
+            {
+                return new Vector3(m02, m22, 0);
+            }
+        }
+        public static Matrix3 identity = new Matrix3(1, 0, 0, 0, 1, 0, 0, 0, 1);
         public static Matrix3 operator *(Matrix3 m1, Matrix3 m2)
         {
             return new Matrix3(
-                m1.m01 * m2.m01 + m1.m11 * m2.m02 + m1.m21 * m2.m03,
-                m1.m02 * m2.m01 + m1.m12 * m2.m02 + m1.m22 * m2.m03,
-                m1.m03 * m2.m01 + m1.m13 * m2.m02 + m1.m23 * m2.m03,
+                m1.m00 * m2.m00 + m1.m10 * m2.m01 + m1.m20 * m2.m02,
+                m1.m01 * m2.m00 + m1.m11 * m2.m01 + m1.m21 * m2.m02,
+                m1.m02 * m2.m00 + m1.m12 * m2.m01 + m1.m22 * m2.m02,
 
-                m1.m01 * m2.m11 + m1.m11 * m2.m12 + m1.m21 * m2.m13,
-                m1.m02 * m2.m11 + m1.m12 * m2.m12 + m1.m22 * m2.m13,
-                m1.m03 * m2.m11 + m1.m13 * m2.m12 + m1.m23 * m2.m13,
+                m1.m00 * m2.m10 + m1.m10 * m2.m11 + m1.m20 * m2.m12,
+                m1.m01 * m2.m10 + m1.m11 * m2.m11 + m1.m21 * m2.m12,
+                m1.m02 * m2.m10 + m1.m12 * m2.m11 + m1.m22 * m2.m12,
 
-                m1.m01 * m2.m21 + m1.m11 * m2.m22 + m1.m21 * m2.m23,
-                m1.m02 * m2.m21 + m1.m12 * m2.m22 + m1.m22 * m2.m23,
-                m1.m03 * m2.m21 + m1.m13 * m2.m22 + m1.m23 * m2.m23);
+                m1.m00 * m2.m20 + m1.m10 * m2.m21 + m1.m20 * m2.m22,
+                m1.m01 * m2.m20 + m1.m11 * m2.m21 + m1.m21 * m2.m22,
+                m1.m02 * m2.m20 + m1.m12 * m2.m21 + m1.m22 * m2.m22);
         }
-
-        void Set(Matrix3 m)
+        public Matrix3 GetTransposed()
         {
-            m01 = m.m01;
-            m02 = m.m02;
-            m03 = m.m03;
-            m11 = m.m11;
-            m12 = m.m12;
-            m13 = m.m13;
-            m21 = m.m21;
-            m22 = m.m22;
-            m23 = m.m23;
+            return new Matrix3(m00, m10, m20, m01, m11, m21, m02, m12, m22);
         }
-
-        void Set(float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9)
+        public void SetTranslation(float x, float y)
         {
+            Set(identity);
+
+            m20 = x;
+            m21 = y;
 
         }
 
-        public void SetRotateZ(double radians)
+        public void Translate(float x, float y)
+        {
+            Matrix3 m = new Matrix3();
+            m.SetTranslation(x, y);
+            Set(this * m);
+
+
+        }
+
+        public void SetRotateX(double radians)
         {
             Set(1, 0, 0, 0, (float)Math.Cos(radians), (float)Math.Sin(radians), 0, (float)-Math.Sin(radians), (float)Math.Cos(radians));
         }
-
+        public void RotateX(double radians)
+        {
+            Matrix3 m = new Matrix3();
+            m.SetRotateX(radians);
+            Set(this * m);
+        }
+        public void SetRotateY(double radians)
+        {
+            Set((float)Math.Cos(radians), 0, (float)-Math.Sin(radians), 0, 1, 0, (float)Math.Sin(radians), 0, (float)Math.Cos(radians));
+        }
+        public void RotateY(double radians)
+        {
+            Matrix3 m = new Matrix3();
+            m.SetRotateY(radians);
+            Set(this * m);
+        }
+        public void SetRotateZ(double radians)
+        {
+            Set((float)Math.Cos(radians), (float)Math.Sin(radians), 0, (float)-Math.Sin(radians), (float)Math.Cos(radians), 0, 0, 0, 1);
+        }
         public void RotateZ(double radians)
         {
             Matrix3 m = new Matrix3();
             m.SetRotateZ(radians);
             Set(this * m);
         }
-
-        public void SetScaled(float x, float y, float z)
+        void SetEuler(float pitch, float yaw, float roll)
         {
-            m01 = x; m02 = 0; m03 = 0; m11 = 0; m12 = y; m13 = 0; m21 = 0; m22 = 0; m23 = z;
+            Matrix3 x = new Matrix3();
+            Matrix3 y = new Matrix3();
+            Matrix3 z = new Matrix3();
+            x.SetRotateX(pitch);
+            y.SetRotateY(yaw);
+            z.SetRotateZ(roll);
         }
-
+        public void SetScale(float x, float y, float z)
+        {
+            m00 = x; m01 = 0; m02 = 0;
+            m10 = 0; m11 = y; m12 = 0;
+            m20 = 0; m21 = 0; m22 = z;
+        }
+        public void SetScale(Vector3 v)
+        {
+            m00 = v.x; m01 = 0; m02 = 0;
+            m10 = 0; m11 = v.y; m12 = 0;
+            m20 = 0; m21 = 0; m22 = v.z;
+        }
         public void Scale(float x, float y, float z)
         {
             Matrix3 m = new Matrix3();
-            m.SetScaled(x, y, z);
+            m.SetScale(x, y, z);
+
             Set(this * m);
         }
 
-
-        public void SetTranslation(float x, float y)
+        void Scale(Vector3 v)
         {
-            
-            m21 = x; m22 = y;
-        }
-
-        internal void Translate(float x, float y)
-        {   // apply vector offset
             Matrix3 m = new Matrix3();
-            m.SetTranslation(x, y);
-
+            m.SetScale(v.x, v.y, v.z);
             Set(this * m);
         }
-
-        public Vector3 Forward
+        public void Set(Matrix3 m)
         {
-            get
-            {
-                return new Vector3(m11, m12, 0);
-            }
+            m00 = m.m00;
+            m01 = m.m01;
+            m02 = m.m02;
+            m10 = m.m10;
+            m11 = m.m11;
+            m12 = m.m12;
+            m20 = m.m20;
+            m21 = m.m21;
+            m22 = m.m22;
         }
-
-
+        void Set(float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8, float m9)
+        {
+            m00 = m1;
+            m01 = m2;
+            m02 = m3;
+            m10 = m4;
+            m11 = m5;
+            m12 = m6;
+            m20 = m7;
+            m21 = m8;
+            m22 = m9;
+        }
     }
+
+
 }

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Diagnostics;
 using MathClasses;
 
-namespace RaylibStarterCS
+namespace TankGame
 {
-    
-
-    public class SceneObject
+    class SceneObject
     {
         protected SceneObject parent = null;
         protected List<SceneObject> children = new List<SceneObject>();
@@ -27,20 +27,20 @@ namespace RaylibStarterCS
 
         public virtual void OnUpdate(float deltaTime)
         {
-            
-            
+
+
         }
 
         public virtual void OnDraw()
         {
-            
+
         }
 
         public void Update(float deltaTime)
         {
             OnUpdate(deltaTime);
 
-            foreach(SceneObject child in children)
+            foreach (SceneObject child in children)
             {
                 child.Update(deltaTime);
             }
@@ -55,7 +55,11 @@ namespace RaylibStarterCS
                 child.Draw();
             }
         }
-
+        public void CopyTransformToLocal(Matrix3 t)
+        {
+            LocalTransform.Set(t);
+            UpdateTransform();
+        }
         public void UpdateTransform()
         {
             if (parent != null)
@@ -66,7 +70,7 @@ namespace RaylibStarterCS
             {
                 globalTransform = localTransform;
             }
-            foreach(SceneObject child in children)
+            foreach (SceneObject child in children)
             {
                 child.UpdateTransform();
             }
@@ -77,22 +81,22 @@ namespace RaylibStarterCS
             localTransform.SetTranslation(x, y);
             UpdateTransform();
         }
-        
-        public SceneObject Parent 
-        { 
-            get { return parent; } 
-        }
-        public SceneObject() 
+
+        public SceneObject Parent
         {
-            
+            get { return parent; }
         }
-        public int GetChildCount() 
-        { 
-            return children.Count; 
+        public SceneObject()
+        {
+
         }
-        public SceneObject GetChild(int index) 
-        { 
-            return children[index]; 
+        public int GetChildCount()
+        {
+            return children.Count;
+        }
+        public SceneObject GetChild(int index)
+        {
+            return children[index];
         }
 
         public void AddChild(SceneObject child)
@@ -101,10 +105,11 @@ namespace RaylibStarterCS
             child.parent = this;
             child.UpdateTransform();
             children.Add(child);
+            
         }
         public void RemoveChild(SceneObject child)
         {
-            if(children.Remove(child) == true)
+            if (children.Remove(child) == true)
             {
                 child.parent = null;
             }
@@ -114,9 +119,19 @@ namespace RaylibStarterCS
             localTransform.Translate(x, y);
             UpdateTransform();
         }
+        public void SetScale(float width, float height)
+        {
+            LocalTransform.SetScale(width, height, 1);
+            UpdateTransform();
+        }
         public void Scale(float width, float height)
         {
             localTransform.Scale(width, height, 1);
+            UpdateTransform();
+        }
+        public void SetRotate(float radians)
+        {
+            LocalTransform.SetRotateZ(radians);
             UpdateTransform();
         }
         public void Rotate(float radians)

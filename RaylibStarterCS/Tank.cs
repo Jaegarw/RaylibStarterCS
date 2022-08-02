@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Diagnostics;
-using System.Numerics;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
 using MathClasses;
 
-namespace RaylibStarterCS
+namespace TankGame
 {
     class Tank : SceneObject
     {
@@ -15,72 +13,89 @@ namespace RaylibStarterCS
         SceneObject turret = new SceneObject();
         SpriteObject turretSprite = new SpriteObject();
 
+        Game game;
+        public static Tank tank;
+        public static int playerHealth = 10;
+        public float rotation = 1f;
+        public float turretRotation = 0.5f;
+        public float speed = 80;
+        float bulletTime = 0;
         
 
-        float tankRotation = 0f;
-        float speed = 100f;
-
-        public Image tankBody;
-        public Texture2D tankBTexture;
-
-        public Vector2 tankPosition = new Vector2(0f, 0f);
-        public Vector3 direction = new Vector3(1f, 1f, 1f);
-
-        public Tank()
+        public Tank(Game owner)
         {
-            
-
-            tankSprite.Load("../../Images/tank-body.png");
+            game = owner;
+            tank = this;
+            tankSprite.Load("../Images/tankGreen.png");
 
             tankSprite.SetPosition(-tankSprite.Width / 2f, -tankSprite.Height / 2f);
 
             AddChild(tankSprite);
 
-            tankBody = LoadImage("../Images/tank-body.png");
-            tankBTexture = LoadTextureFromImage(tankBody);
+            turret.SetPosition(globalTransform.X, globalTransform.Y);
+
+            turretSprite.Load("../Images/barrelGreen.png");
+
+            turretSprite.SetPosition(-turretSprite.Width / 2f, 0);
+
+            AddChild(turret);
+
+            turret.AddChild(turretSprite);
 
             
         }
 
-        
-
-
         public override void OnUpdate(float deltaTime)
         {
-           
+            
 
-            if(IsKeyDown(KeyboardKey.KEY_Q))
+            if (playerHealth <= 0)
             {
-                turret.Rotate(-deltaTime);
-            }
-            if (IsKeyDown(KeyboardKey.KEY_E))
-            {
-                turret.Rotate(deltaTime);
+                game.RemoveSceneObject(this);
             }
 
-            if(IsKeyDown(KeyboardKey.KEY_A))
+            if (IsKeyDown(KeyboardKey.KEY_A))
             {
-                this.Rotate(-(tankRotation * deltaTime));
-                
+                this.Rotate(-(rotation * deltaTime));
             }
-
             if (IsKeyDown(KeyboardKey.KEY_D))
             {
-                this.Rotate(tankRotation * deltaTime);
+                this.Rotate(rotation * deltaTime);
             }
 
-            if(IsKeyDown(KeyboardKey.KEY_W))
+            if (IsKeyDown(KeyboardKey.KEY_W))
             {
-                TranslateLocal(LocalTransform.Forward.X * (speed * deltaTime), LocalTransform.Forward.Y * (speed * deltaTime));
+                TranslateLocal(localTransform.Forward.x * (speed * deltaTime), localTransform.Forward.y * (speed * deltaTime));
                 
-
             }
             if (IsKeyDown(KeyboardKey.KEY_S))
             {
-                TranslateLocal(-direction.X * (speed * deltaTime), -direction.Y * (speed * deltaTime));
-                direction = LocalTransform.Forward;
-            }
-        }
+                TranslateLocal(-localTransform.Forward.x * (speed * deltaTime), -localTransform.Forward.y * (speed * deltaTime));
+                
 
+            }
+            if (IsKeyDown(KeyboardKey.KEY_Q))
+            {
+                turret.Rotate(-(turretRotation * deltaTime));
+            }
+            if (IsKeyDown(KeyboardKey.KEY_E))
+            {
+                turret.Rotate(turretRotation * deltaTime);
+            }
+
+            if(bulletTime < 0 && IsKeyReleased(KeyboardKey.KEY_SPACE))
+            {
+                Bullet bite = new Bullet(game);
+
+                bulletTime = 1;
+
+                bite.CopyTransformToLocal(turret.GlobalTransform);
+
+                bite.TranslateLocal(0, 40);
+
+                game.AddSceneObject(bite);
+            }
+            bulletTime -= deltaTime;
+        }
     }
 }
