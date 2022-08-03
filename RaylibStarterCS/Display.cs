@@ -11,10 +11,12 @@ namespace TankGame
     {
         SceneObject _HUD = new SceneObject();
         public int score = 0;
+        public int scoreAdded;
         public static Display display;
         Game game;
-        
-        
+        public int comboMultiplier = 1;
+        public float textTimer = 10;
+
         public Display(Game owner)
         {
             game = owner;
@@ -31,8 +33,20 @@ namespace TankGame
             display = this;
             DrawText("SCORE", GetScreenWidth() - (GetScreenWidth() / 5), GetScreenHeight() / 40, GetScreenWidth() / 24, Color.BLACK);
             DrawText(score.ToString(), GetScreenWidth() - (GetScreenWidth() / 6), GetScreenHeight() / 10, GetScreenWidth() / 18, Color.BLACK);
-
+            
             DrawRectangleRec(healthBar, Color.RED);
+
+            DrawText("x" + display.comboMultiplier.ToString(), GetScreenWidth() - (GetScreenWidth() / 6), GetScreenHeight() - (GetScreenHeight() / 10), GetScreenWidth() / 24, Color.RED);
+            if (textTimer < 2)
+            {
+                DrawText(scoreAdded.ToString(), GetScreenWidth() - (GetScreenWidth() / 4), GetScreenHeight() - (GetScreenHeight() / 10), GetScreenWidth() / 21, Color.BLACK);
+                
+            }
+            else
+            {
+                scoreAdded = 0;
+            }
+            textTimer += deltaTime;
         }
     }
 }

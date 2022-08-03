@@ -11,14 +11,16 @@ namespace TankGame
         SpriteObject badBulletSprite = new SpriteObject();
         public float speed = 0.6f;
         public float duration;
-        
+
+        Enemy enemy;
+
         static Game game;
         
         public EnemyBullet(Game owner)
         {
             game = owner;
 
-            
+            enemy = new Enemy(game);
 
             badBulletSprite.Load("../Images/bulletRedSilver_outline.png");
             badBulletSprite.SetPosition(-badBulletSprite.Width / 2f, 0);
@@ -32,7 +34,7 @@ namespace TankGame
 
             
 
-            switch(Enemy.enemy.direction)
+            switch(enemy.direction)
             {
                 case Enemy.Direction.up:
                     TranslateLocal(0, 
@@ -67,6 +69,14 @@ namespace TankGame
             && (globalTransform.Y > Tank.tank.GlobalTransform.Y - 100f) && (globalTransform.Y < Tank.tank.GlobalTransform.Y + 100F)))
             {
                 Tank.playerHealth--;
+                if(Display.display.textTimer < 2)
+                {
+                    Display.display.textTimer = 3;
+                    Display.display.textTimer = 0;
+                }
+                
+                Display.display.comboMultiplier = 1;
+                
                 duration = 0;
                 game.RemoveSceneObject(this);
 

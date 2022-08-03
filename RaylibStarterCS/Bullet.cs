@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
+using Raylib_cs;
 using static Raylib_cs.Raylib;
+using MathClasses;
+using static TankGame.Display;
 
 namespace TankGame
 {
@@ -43,23 +46,52 @@ namespace TankGame
             {
                 if(e != null)
                 {
-                    if (((globalTransform.X > e.GlobalTransform.X - 100f) && (globalTransform.X < e.GlobalTransform.X + 100F)
-                    && (globalTransform.Y > e.GlobalTransform.Y - 100f) && (globalTransform.Y < e.GlobalTransform.Y + 100F)))
+                    
+                    if (CheckCollisionCircles(new System.Numerics.Vector2(e.GlobalTransform.X, e.GlobalTransform.Y), 90, 
+                        new System.Numerics.Vector2(GlobalTransform.X, GlobalTransform.Y), 28))
                     {
-                        Display.display.score += 10;
+                        display.score += (10 * display.comboMultiplier);
+                        display.scoreAdded += 10;
+                        display.textTimer = 0;
                         e.enemyHealth--;
                         game.RemoveSceneObject(this);
 
                     }
+
+                    
                 }
-                       
+                if (e.enemyHealth <= 0)
+                {
+                    if(display.comboMultiplier < 21)
+                    {
+                        display.comboMultiplier++;
+                    }
                     
+                    display.score += (100 * display.comboMultiplier);
+                    display.scoreAdded += 100;
+                    display.textTimer = 0;
+                    
+                    
+
+                    game.RemoveSceneObject(e);
+                    display.textTimer = 3;
+                    display.textTimer = 0;
+                    
+
+                    e.enemyHealth = 3;
+
+                    e.direction = Enemy.Direction.up;
+
+                    e.SetPosition(GetScreenWidth() * 2, GetScreenHeight() * 2);
+                }
+
             }
-                    
-                
-                
+
             
+
             
+
         }
+        
     }
 }

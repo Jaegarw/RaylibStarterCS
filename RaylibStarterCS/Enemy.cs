@@ -18,18 +18,21 @@ namespace TankGame
 
         public SpriteObject enemySprite = new SpriteObject();
         Game game;
-        public static Enemy enemy;
+        public Enemy enemy;
         public float speed = 120f;
         public float rotation = 119;
         
         float badBulletTime = 2;
-        public int enemyHealth = 3;
+        public int enemyHealth;
         public bool turning = false;
         public bool directionChange;
         public Enemy(Game _game)
         {
             game = _game;
             enemy = this;
+
+            
+
             enemySprite.Load("../Images/ship.png");
             
             enemySprite.SetPosition(0, 0);
@@ -41,12 +44,7 @@ namespace TankGame
 
         public override void OnUpdate(float deltaTime)
         {
-            if(enemyHealth <= 0)
-            {
-                Display.display.score += 100;
-
-                game.RemoveSceneObject(this);
-            }
+            
 
             TranslateLocal(localTransform.Forward.x * (speed * deltaTime), -localTransform.Forward.y * (speed * deltaTime));
             if (turning == false)
@@ -90,7 +88,7 @@ namespace TankGame
             }
 
 
-            Console.WriteLine(direction);
+            
             
             
             
