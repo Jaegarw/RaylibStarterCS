@@ -23,7 +23,7 @@ namespace TankGame
         public float rotation = 119;
         
         float badBulletTime = 2;
-        public static int enemyHealth = 3;
+        public int enemyHealth = 3;
         public bool turning = false;
         public bool directionChange;
         public Enemy(Game _game)
@@ -43,6 +43,8 @@ namespace TankGame
         {
             if(enemyHealth <= 0)
             {
+                Display.display.score += 100;
+
                 game.RemoveSceneObject(this);
             }
 

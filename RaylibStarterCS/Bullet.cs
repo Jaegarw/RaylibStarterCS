@@ -29,8 +29,7 @@ namespace TankGame
 
         public override void OnUpdate(float deltaTime)
         {
-            Console.WriteLine(Enemy.enemy.GlobalTransform.X);
-            Console.WriteLine(Enemy.enemy.GlobalTransform.Y);
+            
 
             TranslateLocal(0, speed * deltaTime);
 
@@ -39,13 +38,28 @@ namespace TankGame
             {
                 game.RemoveSceneObject(this);
             }
-            if(((globalTransform.X > Enemy.enemy.GlobalTransform.X - 100f) && (globalTransform.X < Enemy.enemy.GlobalTransform.X + 100F)
-            && (globalTransform.Y > Enemy.enemy.GlobalTransform.Y - 100f) && (globalTransform.Y < Enemy.enemy.GlobalTransform.Y + 100F)))
+
+            foreach(Enemy e in SpawnPoint.spawnPoint.enemiesToSpawn)
             {
-                Enemy.enemyHealth--;
-                game.RemoveSceneObject(this);
-                
+                if(e != null)
+                {
+                    if (((globalTransform.X > e.GlobalTransform.X - 100f) && (globalTransform.X < e.GlobalTransform.X + 100F)
+                    && (globalTransform.Y > e.GlobalTransform.Y - 100f) && (globalTransform.Y < e.GlobalTransform.Y + 100F)))
+                    {
+                        Display.display.score += 10;
+                        e.enemyHealth--;
+                        game.RemoveSceneObject(this);
+
+                    }
+                }
+                       
+                    
             }
+                    
+                
+                
+            
+            
         }
     }
 }

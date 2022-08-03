@@ -23,7 +23,7 @@ namespace TankGame
 
         private float deltaTime = 0.005f;
 
-        List<SceneObject> sceneObjects = new List<SceneObject>();
+        public List<SceneObject> sceneObjects = new List<SceneObject>();
         private List<SceneObject> sceneObjectsToAdd = new List<SceneObject>();
         private List<SceneObject> sceneObjectsToRemove = new List<SceneObject>();
 
@@ -54,16 +54,18 @@ namespace TankGame
             SetTargetFPS(60);       // Set our game to run at 60 frames-per-second
 
             Tank tank = new Tank(this);
-            Enemy enemy = new Enemy(this);
+            
             SpawnPoint spawn = new SpawnPoint(this);
+            Display display = new Display(this);
 
             tank.SetPosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
-            enemy.SetPosition(240, 240);
+            
             spawn.SetPosition(240, 300);
 
             sceneObjects.Add(tank);
-            sceneObjects.Add(enemy);
+            
             sceneObjects.Add(spawn);
+            sceneObjects.Add(display);
         }
 
         public void Shutdown()
