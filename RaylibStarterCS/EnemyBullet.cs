@@ -69,11 +69,10 @@ namespace TankGame
             && (globalTransform.Y > Tank.tank.GlobalTransform.Y - 100f) && (globalTransform.Y < Tank.tank.GlobalTransform.Y + 100F)))
             {
                 Tank.playerHealth--;
-                if(Display.display.textTimer < 2)
-                {
-                    Display.display.textTimer = 3;
-                    Display.display.textTimer = 0;
-                }
+                
+                Display.display.textTimer = 3;
+                    
+                
                 
                 Display.display.comboMultiplier = 1;
                 

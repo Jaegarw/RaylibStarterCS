@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Raylib_cs;
+using static Raylib_cs.Raylib;
 
 namespace TankGame
 {
@@ -18,11 +20,13 @@ namespace TankGame
 
             spawnPoint = this;
 
-            spawn.SetPosition(240, 720);
+            spawn.SetPosition(GetScreenWidth() / 6, (float)GetScreenHeight() * 1.3f);
 
             for (int x = 0; x < enemiesToSpawn.Length; x++)
             {
                 enemiesToSpawn[x] = new Enemy(game);
+                enemiesToSpawn[x].SetPosition(GetScreenWidth() / 6, (float)GetScreenHeight() * 1.3f);
+                enemiesToSpawn[x].direction = Enemy.Direction.up;
             }
 
             foreach (Enemy e in spawnPoint.enemiesToSpawn)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
+using static TankGame.Bullet;
 using MathClasses;
 
 namespace TankGame
@@ -12,6 +13,7 @@ namespace TankGame
         SceneObject _HUD = new SceneObject();
         public int score = 0;
         public int scoreAdded;
+        public int bonus = 1;
         public static Display display;
         Game game;
         public int comboMultiplier = 1;
@@ -20,12 +22,20 @@ namespace TankGame
         public Display(Game owner)
         {
             game = owner;
+
+            
         }
             
 
 
         public override void OnUpdate(float deltaTime)
         {
+            if(score > 999 * bonus)
+            {
+                Tank.playerHealth++;
+                bonus++;
+            }
+
             float barWidth = 75 - ((75 / (Tank.playerMaxHealth)) * -(Tank.playerHealth - (Tank.playerMaxHealth + 1)));
 
             Rectangle healthBar = new Rectangle(Tank.tank.LocalTransform.X - 37.5f, Tank.tank.LocalTransform.Y - (GetScreenHeight() / 10), barWidth, 10);
@@ -36,16 +46,20 @@ namespace TankGame
             
             DrawRectangleRec(healthBar, Color.RED);
 
-            DrawText("x" + display.comboMultiplier.ToString(), GetScreenWidth() - (GetScreenWidth() / 6), GetScreenHeight() - (GetScreenHeight() / 10), GetScreenWidth() / 24, Color.RED);
-            if (textTimer < 2)
+            if(hitPos != System.Numerics.Vector2.Zero)
             {
-                DrawText(scoreAdded.ToString(), GetScreenWidth() - (GetScreenWidth() / 4), GetScreenHeight() - (GetScreenHeight() / 10), GetScreenWidth() / 21, Color.BLACK);
+                if (textTimer < 2)
+                {
+                    if ((int)hitPos.Y < 0)
+                        hitPos.Y = GetScreenHeight() / 30;
+                    if (((int)hitPos.X + (GetScreenWidth() / 21) + (GetScreenWidth() / 24)) > GetScreenWidth())
+                        hitPos.X = GetScreenWidth() - ((GetScreenWidth() / 10) + (GetScreenWidth() / 12));
+                    DrawText(scoreAdded.ToString(), (int)hitPos.X, (int)(hitPos.Y - 20), GetScreenWidth() / 21, Color.BLACK);
+                    DrawText("x" + display.comboMultiplier.ToString(), (int)hitPos.X + 100, (int)(hitPos.Y - 20), GetScreenWidth() / 24, Color.RED);
+                }
                 
             }
-            else
-            {
-                scoreAdded = 0;
-            }
+            
             textTimer += deltaTime;
         }
     }

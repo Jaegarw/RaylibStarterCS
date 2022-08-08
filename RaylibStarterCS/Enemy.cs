@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Numerics;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
 using MathClasses;
@@ -15,12 +16,14 @@ namespace TankGame
         }
         public Direction direction = Direction.up;
 
-
+        
+        
         public SpriteObject enemySprite = new SpriteObject();
         Game game;
         public Enemy enemy;
-        public float speed = 120f;
-        public float rotation = 119;
+        public float speed = 150f;
+        public float maxSpeed = 300f;
+        public float rotation = 1f;
         
         float badBulletTime = 2;
         public int enemyHealth;
@@ -35,7 +38,7 @@ namespace TankGame
 
             enemySprite.Load("../Images/ship.png");
             
-            enemySprite.SetPosition(0, 0);
+            enemySprite.SetPosition(SpawnPoint.spawnPoint.GlobalTransform.X, SpawnPoint.spawnPoint.GlobalTransform.Y);
 
             AddChild(enemySprite);
         }
@@ -44,13 +47,14 @@ namespace TankGame
 
         public override void OnUpdate(float deltaTime)
         {
-            
 
+            if (speed > maxSpeed)
+                speed = maxSpeed;
             TranslateLocal(localTransform.Forward.x * (speed * deltaTime), -localTransform.Forward.y * (speed * deltaTime));
             if (turning == false)
             {
                 
-                if (rotation > 61)
+                if (rotation > 32)
                 {
                     while(directionChange)
                     {
@@ -81,7 +85,7 @@ namespace TankGame
                     }
                     rotation--;
                 }
-                if (rotation == 61)
+                if (rotation == 32)
                 {
                     rotation = 0;
                 }
@@ -92,7 +96,7 @@ namespace TankGame
             
             
             
-            if(rotation < 60)
+            if(rotation < 31)
             {
 
                 
@@ -103,7 +107,7 @@ namespace TankGame
                     if (direction == Direction.down)
                     {
                         turning = true;
-                        Rotate((1.5708f * deltaTime));
+                        Rotate((1.5708f * deltaTime * 2));
                         rotation++;
                     }
                     
@@ -115,7 +119,7 @@ namespace TankGame
                     if (direction == Direction.up)
                     {
                         turning = true;
-                        Rotate((1.5708f * deltaTime));
+                        Rotate((1.5708f * deltaTime * 2));
                         rotation++;
                     }
                     
@@ -127,7 +131,7 @@ namespace TankGame
                     if (direction == Direction.right)
                     {
                         turning = true;
-                        Rotate((1.5708f * deltaTime));
+                        Rotate((1.5708f * deltaTime * 2));
                         rotation++;
                     }
                     
@@ -137,7 +141,7 @@ namespace TankGame
                     if (direction == Direction.left)
                     {
                         turning = true;
-                        Rotate((1.5708f * deltaTime));
+                        Rotate((1.5708f * deltaTime * 2));
                         rotation++;
 
                     }
@@ -153,10 +157,10 @@ namespace TankGame
                 }
                         
             }
-            else if(rotation == 60)
+            else if(rotation == 31)
             {
                 turning = false;
-                rotation = 150;
+                rotation = 76;
 
                 directionChange = true;
             }
