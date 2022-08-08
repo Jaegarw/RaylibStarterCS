@@ -48,7 +48,14 @@ namespace TankGame
 
         public override void OnUpdate(float deltaTime)
         {
-            
+            if ((globalTransform.X < 0) || (globalTransform.X > GetScreenWidth()) ||
+                (globalTransform.Y < 0) || (globalTransform.Y > GetScreenHeight()))
+            {
+                SetPosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
+                playerHealth--;
+                
+
+            }
 
             if (playerHealth <= 0)
             {
@@ -88,7 +95,7 @@ namespace TankGame
             {
                 Bullet bite = new Bullet(game);
 
-                bulletTime = 1;
+                bulletTime = 0.5f;
 
                 bite.CopyTransformToLocal(turret.GlobalTransform);
 

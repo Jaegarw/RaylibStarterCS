@@ -13,11 +13,14 @@ namespace TankGame
         SceneObject _HUD = new SceneObject();
         public int score = 0;
         public int scoreAdded;
-        public int bonus = 1;
+        public float bonus = 1;
+        int baseScore = 999;
         public static Display display;
         Game game;
         public int comboMultiplier = 1;
-        public float textTimer = 10;
+        public float textTimer;
+        public float textTimerH;
+        
 
         public Display(Game owner)
         {
@@ -30,11 +33,19 @@ namespace TankGame
 
         public override void OnUpdate(float deltaTime)
         {
-            if(score > 999 * bonus)
+            if(score > baseScore * bonus)
             {
+                baseScore += 1000;
+
+                if (Tank.playerHealth < Tank.playerMaxHealth)
                 Tank.playerHealth++;
-                bonus++;
+                if(bonus < 30f)
+                bonus *= 1.2f;
             }
+
+            DrawText("HEALTH UP", GetScreenWidth() - (GetScreenWidth() / 10), GetScreenHeight() / 3, GetScreenWidth() / 72, Color.RED);
+            DrawText(MathF.Truncate((baseScore * bonus) + 1).ToString(), GetScreenWidth() - (GetScreenWidth() / 10), 0 + (GetScreenHeight() / 3) + (GetScreenHeight() / 20), GetScreenWidth() / 54, Color.BLACK);
+
 
             float barWidth = 75 - ((75 / (Tank.playerMaxHealth)) * -(Tank.playerHealth - (Tank.playerMaxHealth + 1)));
 
@@ -61,6 +72,7 @@ namespace TankGame
             }
             
             textTimer += deltaTime;
+            
         }
     }
 }

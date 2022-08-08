@@ -50,7 +50,7 @@ namespace TankGame
 
             foreach(Enemy e in SpawnPoint.spawnPoint.enemiesToSpawn)
             {
-                if(e != null)
+                if(e.active)
                 {
                     
                     if (CheckCollisionCircles(new Vector2(e.GlobalTransform.X, e.GlobalTransform.Y), 90, 
@@ -71,27 +71,18 @@ namespace TankGame
                 }
                 if (e.enemyHealth <= 0)
                 {
-                    if(display.comboMultiplier < 21)
+                    if(display.comboMultiplier < 20)
                     {
                         display.comboMultiplier++;
                     }
-                    
+                    Console.WriteLine(e.speed);
                     display.score += (100 * display.comboMultiplier);
                     display.scoreAdded += 100;
                     display.textTimer = 0;
 
-
-                    e.speed += 10f;
-                    game.RemoveSceneObject(e);
-                    display.textTimer = 3;
-                    display.textTimer = 0;
+                    Recycle(e);
                     
-
-                    e.enemyHealth = 3;
-
-                    e.direction = Enemy.Direction.up;
-
-                    e.SetPosition(GetScreenWidth() * 2, GetScreenHeight() * 2);
+                    //e.SetPosition(GetScreenWidth() * 2, GetScreenHeight() * 2);
                 }
 
             }
@@ -101,6 +92,19 @@ namespace TankGame
             
 
         }
-        
+        public void Recycle(Enemy enemyR)
+        {
+            enemyR.speed += 20f;
+            game.RemoveSceneObject(enemyR);
+            display.textTimer = 3;
+            display.textTimer = 0;
+
+
+            enemyR.enemyHealth = 3;
+
+            enemyR.active = false;
+            //enemyR.SetPosition(SpawnPoint.spawnPoint.GlobalTransform.X, SpawnPoint.spawnPoint.GlobalTransform.Y);
+            enemyR.direction = Enemy.Direction.up;
+        }
     }
 }

@@ -40,11 +40,11 @@ namespace TankGame
             {
                 
 
-                spawnTime = 8;
+                spawnTime = 4;
 
                 enemiesToSpawn[x].CopyTransformToLocal(spawn.GlobalTransform);
 
-                
+                enemiesToSpawn[x].active = true;
                 game.AddSceneObject(enemiesToSpawn[x]);
 
                 x++;
