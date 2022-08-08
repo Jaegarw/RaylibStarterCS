@@ -24,6 +24,7 @@ namespace TankGame
         public float speed = 150f;
         public float maxSpeed = 300f;
         public float rotation = 1f;
+        
         public bool active;
         float badBulletTime = 2;
         public int enemyHealth;
@@ -48,9 +49,9 @@ namespace TankGame
         public override void OnUpdate(float deltaTime)
         {
             if ((globalTransform.X < 0) || (globalTransform.X > GetScreenWidth()) ||
-                (globalTransform.Y < 0) || (globalTransform.Y > (float)GetScreenHeight() * 1.4f))
+                (globalTransform.Y < 0 - ((float)GetScreenHeight() * 2)) || (globalTransform.Y > (float)GetScreenHeight() * 2))
             {
-
+                if(active)
                 Bullet.bullet.Recycle(this);
 
             }

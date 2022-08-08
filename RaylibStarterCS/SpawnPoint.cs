@@ -11,7 +11,7 @@ namespace TankGame
         SceneObject spawn = new SceneObject();
         float spawnTime = 3;
         Game game;
-        public Enemy[] enemiesToSpawn = new Enemy[8];
+        public Enemy[] enemiesToSpawn = new Enemy[5];
         int x = 0;
         public static SpawnPoint spawnPoint;
         public SpawnPoint(Game Owner)
@@ -40,7 +40,7 @@ namespace TankGame
             {
                 
 
-                spawnTime = 4;
+                spawnTime = 8;
 
                 enemiesToSpawn[x].CopyTransformToLocal(spawn.GlobalTransform);
 

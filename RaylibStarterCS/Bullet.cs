@@ -96,14 +96,13 @@ namespace TankGame
         {
             enemyR.speed += 20f;
             game.RemoveSceneObject(enemyR);
-            display.textTimer = 3;
-            display.textTimer = 0;
 
+            Console.WriteLine("bwah");
 
             enemyR.enemyHealth = 3;
 
             enemyR.active = false;
-            //enemyR.SetPosition(SpawnPoint.spawnPoint.GlobalTransform.X, SpawnPoint.spawnPoint.GlobalTransform.Y);
+            enemyR.SetPosition(SpawnPoint.spawnPoint.GlobalTransform.X, SpawnPoint.spawnPoint.GlobalTransform.Y);
             enemyR.direction = Enemy.Direction.up;
         }
     }
