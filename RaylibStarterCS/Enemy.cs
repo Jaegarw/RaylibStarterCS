@@ -24,8 +24,12 @@ namespace TankGame
         public float speed = 150f;
         public float maxSpeed = 300f;
         public float rotation = 1f;
-        
+        public float startDir = -1f;
+        public static float spawnTime = 5;
+        public static float spawnTimeB = 4;
+        public static float spawnTimeMax = 20;
         public bool active;
+        public bool isSpawnA;
         float badBulletTime = 2;
         public int enemyHealth;
         public bool turning = false;
@@ -38,8 +42,20 @@ namespace TankGame
             
 
             enemySprite.Load("../Images/ship.png");
+
+            switch(direction)
+            {
+                case Direction.up:
+                    enemySprite.SetPosition(SpawnPoint.spawnPoint.GlobalTransform.X, SpawnPoint.spawnPoint.GlobalTransform.Y);
+                    
+                    break;
+                case Direction.down:
+                    enemySprite.SetPosition(SpawnPointB.spawnPointB.GlobalTransform.X, SpawnPointB.spawnPointB.GlobalTransform.Y);
+                    
+                    break;
+            }
             
-            enemySprite.SetPosition(SpawnPoint.spawnPoint.GlobalTransform.X, SpawnPoint.spawnPoint.GlobalTransform.Y);
+            
 
             AddChild(enemySprite);
         }
@@ -48,16 +64,23 @@ namespace TankGame
 
         public override void OnUpdate(float deltaTime)
         {
-            if ((globalTransform.X < 0) || (globalTransform.X > GetScreenWidth()) ||
-                (globalTransform.Y < 0 - ((float)GetScreenHeight() * 2)) || (globalTransform.Y > (float)GetScreenHeight() * 2))
+            if ((globalTransform.X < -300) || (globalTransform.X > GetScreenWidth() + 300) ||
+                (globalTransform.Y < -300) || (globalTransform.Y > GetScreenHeight() + 300))
             {
+
                 if(active)
-                Bullet.bullet.Recycle(this);
+                {
+                    Console.WriteLine(globalTransform.X);
+                    Console.WriteLine(globalTransform.Y);
+                    Console.WriteLine("out of bounds");
+                    Bullet.bullet.Recycle(this);
+                }
+                    
 
             }
             if (speed > maxSpeed)
                 speed = maxSpeed;
-            TranslateLocal(localTransform.Forward.x * (speed * deltaTime), -localTransform.Forward.y * (speed * deltaTime));
+            TranslateLocal(localTransform.Forward.x * (speed * deltaTime), -startDir * -localTransform.Forward.y * (speed * deltaTime));
             if (turning == false)
             {
                 
@@ -181,6 +204,12 @@ namespace TankGame
                 badBite.CopyTransformToLocal(enemySprite.GlobalTransform);
 
                 badBite.Rotate(MathF.PI / 2);
+
+                //if(!isSpawnA)
+                //{
+                //    badBite.bulletDir *= -1;
+                //    //badBite.badBulletSprite.Rotate(MathF.PI);
+                //}
 
                 //badBite.TranslateLocal(0, 0);
 

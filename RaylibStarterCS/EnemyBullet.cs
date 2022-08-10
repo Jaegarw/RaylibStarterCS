@@ -8,9 +8,11 @@ namespace TankGame
 {
     class EnemyBullet : SceneObject
     {
-        SpriteObject badBulletSprite = new SpriteObject();
+        public SpriteObject badBulletSprite = new SpriteObject();
         public float speed = 0.6f;
         public float duration;
+
+        public int bulletDir = 1;
 
         Enemy enemy;
 
@@ -22,6 +24,11 @@ namespace TankGame
 
             enemy = new Enemy(game);
 
+            
+            
+
+            
+
             badBulletSprite.Load("../Images/bulletRedSilver_outline.png");
             badBulletSprite.SetPosition(-badBulletSprite.Width / 2f, 0);
 
@@ -31,26 +38,26 @@ namespace TankGame
         public override void OnUpdate(float deltaTime)
         {
             duration++;
-
             
-
-            switch(enemy.direction)
+            
+            
+            switch (enemy.direction)
             {
                 case Enemy.Direction.up:
                     TranslateLocal(0, 
-                        400f * (deltaTime * -speed));
+                        400f * bulletDir * (deltaTime * -speed));
                     break;
                 case Enemy.Direction.right:
                     TranslateLocal(0,
-                        400f * (deltaTime * -speed));
+                        400f * bulletDir * (deltaTime * -speed));
                     break;
                 case Enemy.Direction.down:
                     TranslateLocal(0,
-                        400f * (deltaTime * -speed));
+                        400f * bulletDir * (deltaTime * -speed));
                     break;
                 case Enemy.Direction.left:
                     TranslateLocal(0,
-                        400f * (deltaTime * -speed));
+                        400f * bulletDir * (deltaTime * -speed));
                     break;
             }
             

@@ -42,8 +42,8 @@ namespace TankGame
             if((globalTransform.X < 0) || (globalTransform.X > GetScreenWidth()) || 
                 (globalTransform.Y < 0) || (globalTransform.Y > GetScreenHeight()))
             {
-                display.textTimer = 3;
-                display.comboMultiplier = 1;
+                //display.textTimer = 3;
+                
                 game.RemoveSceneObject(this);
 
             }
@@ -59,7 +59,7 @@ namespace TankGame
                         
                         hitPos = new Vector2(e.GlobalTransform.X, e.GlobalTransform.Y);
                         display.scoreAdded = 0;
-                        display.score += (10 * display.comboMultiplier);
+                        score += (10 * display.comboMultiplier);
                         display.scoreAdded += 10;
                         display.textTimer = 0;
                         e.enemyHealth--;
@@ -76,7 +76,7 @@ namespace TankGame
                         display.comboMultiplier++;
                     }
                     Console.WriteLine(e.speed);
-                    display.score += (100 * display.comboMultiplier);
+                    score += (100 * display.comboMultiplier);
                     display.scoreAdded += 100;
                     display.textTimer = 0;
 
@@ -87,23 +87,71 @@ namespace TankGame
 
             }
 
-            
+            foreach (Enemy e in SpawnPointB.spawnPointB.enemiesToSpawnB)
+            {
+                if (e.active)
+                {
 
-            
+                    if (CheckCollisionCircles(new Vector2(e.GlobalTransform.X, e.GlobalTransform.Y), 90,
+                        new Vector2(GlobalTransform.X, GlobalTransform.Y), 28))
+                    {
+
+                        hitPos = new Vector2(e.GlobalTransform.X, e.GlobalTransform.Y);
+                        display.scoreAdded = 0;
+                        score += (10 * display.comboMultiplier);
+                        display.scoreAdded += 10;
+                        display.textTimer = 0;
+                        e.enemyHealth--;
+                        game.RemoveSceneObject(this);
+
+                    }
+
+
+                }
+                if (e.enemyHealth <= 0)
+                {
+                    if (display.comboMultiplier < 20)
+                    {
+                        display.comboMultiplier++;
+                    }
+                    Console.WriteLine(e.speed);
+                    score += (100 * display.comboMultiplier);
+                    display.scoreAdded += 100;
+                    display.textTimer = 0;
+
+                    Recycle(e);
+
+                    //e.SetPosition(GetScreenWidth() * 2, GetScreenHeight() * 2);
+                }
+
+            }
+
+
 
         }
         public void Recycle(Enemy enemyR)
         {
             enemyR.speed += 20f;
-            game.RemoveSceneObject(enemyR);
+            
 
-            Console.WriteLine("bwah");
+            
 
             enemyR.enemyHealth = 3;
 
             enemyR.active = false;
-            enemyR.SetPosition(SpawnPoint.spawnPoint.GlobalTransform.X, SpawnPoint.spawnPoint.GlobalTransform.Y);
-            enemyR.direction = Enemy.Direction.up;
+            
+            if(enemyR.isSpawnA)
+            {
+                enemyR.SetPosition(SpawnPoint.spawnPoint.GlobalTransform.X, SpawnPoint.spawnPoint.GlobalTransform.Y);
+                enemyR.direction = Enemy.Direction.up;
+            }  
+            else
+            {
+                enemyR.SetPosition(SpawnPointB.spawnPointB.GlobalTransform.X, SpawnPointB.spawnPointB.GlobalTransform.Y);
+                enemyR.direction = Enemy.Direction.down;
+                enemyR.startDir *= -1f;
+            }
+            game.RemoveSceneObject(enemyR);
         }
     }
 }

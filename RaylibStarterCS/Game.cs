@@ -56,15 +56,18 @@ namespace TankGame
             Tank tank = new Tank(this);
             
             SpawnPoint spawn = new SpawnPoint(this);
+            SpawnPointB spawnB = new SpawnPointB(this);
             Display display = new Display(this);
 
             tank.SetPosition(GetScreenWidth() / 2, GetScreenHeight() / 2);
             
-            spawn.SetPosition(240, 300);
+            spawn.SetPosition(GetScreenWidth() / 6, (float)GetScreenHeight() * 1.3f);
+            spawnB.SetPosition(GetScreenWidth() - 150, -150);
 
             sceneObjects.Add(tank);
             
             sceneObjects.Add(spawn);
+            sceneObjects.Add(spawnB);
             sceneObjects.Add(display);
         }
 

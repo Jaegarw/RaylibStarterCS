@@ -11,7 +11,7 @@ namespace TankGame
     class Display : SceneObject
     {
         SceneObject _HUD = new SceneObject();
-        public int score = 0;
+        public static float score = 0;
         public int scoreAdded;
         public float bonus = 1;
         int baseScore = 999;
@@ -40,7 +40,7 @@ namespace TankGame
                 if (Tank.playerHealth < Tank.playerMaxHealth)
                 Tank.playerHealth++;
                 if(bonus < 30f)
-                bonus *= 1.2f;
+                bonus *= 1.1f;
             }
 
             DrawText("HEALTH UP", GetScreenWidth() - (GetScreenWidth() / 10), GetScreenHeight() / 3, GetScreenWidth() / 72, Color.RED);
@@ -53,7 +53,7 @@ namespace TankGame
 
             display = this;
             DrawText("SCORE", GetScreenWidth() - (GetScreenWidth() / 5), GetScreenHeight() / 40, GetScreenWidth() / 24, Color.BLACK);
-            DrawText(score.ToString(), GetScreenWidth() - (GetScreenWidth() / 6), GetScreenHeight() / 10, GetScreenWidth() / 18, Color.BLACK);
+            DrawText(((int)score).ToString(), GetScreenWidth() - (GetScreenWidth() / 6), GetScreenHeight() / 10, GetScreenWidth() / 18, Color.BLACK);
             
             DrawRectangleRec(healthBar, Color.RED);
 

@@ -15,8 +15,8 @@ namespace TankGame
 
         Game game;
         public static Tank tank;
-        public static int playerHealth = 10;
-        public static int playerMaxHealth = 10;
+        public static float playerHealth = 10;
+        public static float playerMaxHealth = 10;
         public float rotation = 2f;
         public float turretRotation = 1.5f;
         public float speed = 160;

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using Raylib_cs;
 using static Raylib_cs.Raylib;
+using static TankGame.Enemy;
 
 namespace TankGame
 {
     class SpawnPoint : SceneObject
     {
         SceneObject spawn = new SceneObject();
-        float spawnTime = 3;
+        
         Game game;
         public Enemy[] enemiesToSpawn = new Enemy[5];
         int x = 0;
@@ -27,32 +28,51 @@ namespace TankGame
                 enemiesToSpawn[x] = new Enemy(game);
                 enemiesToSpawn[x].SetPosition(GetScreenWidth() / 6, (float)GetScreenHeight() * 1.3f);
                 enemiesToSpawn[x].direction = Enemy.Direction.up;
+                enemiesToSpawn[x].isSpawnA = true;
             }
 
             foreach (Enemy e in spawnPoint.enemiesToSpawn)
             {
                 e.enemyHealth = 3;
+                
             }
         }
         public override void OnUpdate(float deltaTime)
         {
-            if (spawnTime < 0)
+            if(!enemiesToSpawn[x].active)
             {
-                
-
-                spawnTime = 8;
-
-                enemiesToSpawn[x].CopyTransformToLocal(spawn.GlobalTransform);
-
-                enemiesToSpawn[x].active = true;
-                game.AddSceneObject(enemiesToSpawn[x]);
-
-                x++;
-                if(x == enemiesToSpawn.Length)
+                if (spawnTime < 0)
                 {
-                    x = 0;
+
+
+                    spawnTime = spawnTimeMax;
+
+                    enemiesToSpawn[x].CopyTransformToLocal(spawn.GlobalTransform);
+
+                    enemiesToSpawn[x].active = true;
+                    game.AddSceneObject(enemiesToSpawn[x]);
+                    Console.WriteLine(spawnTimeMax);
+                    if (spawnTimeMax > 2)
+                    {
+                        Console.WriteLine(spawnTimeMax);
+                        float playerV = -0.2f + ((Tank.playerHealth / Tank.playerMaxHealth) / 2);
+                        float scoreV = Display.score / 50000;
+                        scoreV = scoreV > 1 ? scoreV = 1 : scoreV;
+                        spawnTimeMax = 20 - 18 * ((playerV + scoreV) / 1.3f);
+                        Console.WriteLine(spawnTimeMax);
+                    }
+                    else
+                    {
+                        spawnTimeMax = 2;
+                    }
+                    x++;
+                    if (x == enemiesToSpawn.Length)
+                    {
+                        x = 0;
+                    }
                 }
             }
+            
             spawnTime -= deltaTime;
         }
     }
