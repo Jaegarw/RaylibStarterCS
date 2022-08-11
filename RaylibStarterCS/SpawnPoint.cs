@@ -48,7 +48,7 @@ namespace TankGame
                     spawnTime = spawnTimeMax;
 
                     enemiesToSpawn[x].CopyTransformToLocal(spawn.GlobalTransform);
-
+                    enemyCount++;
                     enemiesToSpawn[x].active = true;
                     game.AddSceneObject(enemiesToSpawn[x]);
                     Console.WriteLine(spawnTimeMax);

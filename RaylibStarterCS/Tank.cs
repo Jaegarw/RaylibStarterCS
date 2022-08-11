@@ -17,9 +17,9 @@ namespace TankGame
         public static Tank tank;
         public static float playerHealth = 10;
         public static float playerMaxHealth = 10;
-        public float rotation = 2f;
-        public float turretRotation = 1.5f;
-        public float speed = 160;
+        public float rotation = 3f;
+        public float turretRotation = 4f;
+        public float speed = 300;
         float bulletTime = 0;
         
 

@@ -15,6 +15,7 @@ namespace TankGame
         public Enemy[] enemiesToSpawnB = new Enemy[5];
         int x = 0;
         public static SpawnPointB spawnPointB;
+        
         public SpawnPointB(Game Owner)
         {
             game = Owner;
@@ -55,7 +56,7 @@ namespace TankGame
                     enemiesToSpawnB[x].SetPosition(spawnB.GlobalTransform.X, spawnB.GlobalTransform.Y);
 
                     Console.WriteLine(enemiesToSpawnB[x].GlobalTransform.X);
-
+                    enemyCount++;
                     enemiesToSpawnB[x].active = true;
                     game.AddSceneObject(enemiesToSpawnB[x]);
                     Console.WriteLine(spawnTimeMax);
@@ -66,7 +67,7 @@ namespace TankGame
                         float playerV = -0.2f + ((Tank.playerHealth / Tank.playerMaxHealth) / 2);
                         float scoreV = Display.score / 50000;
                         scoreV = scoreV > 1 ? scoreV = 1 : scoreV;
-                        spawnTimeMax = 20 - 18 * ((playerV + scoreV) / 1.3f);
+                        spawnTimeMax = 15 - 13 * ((playerV + scoreV) / 1.3f);
                         Console.WriteLine(spawnTimeMax);
                     }
                     else

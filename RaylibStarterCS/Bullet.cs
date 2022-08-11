@@ -113,6 +113,10 @@ namespace TankGame
                     if (display.comboMultiplier < 20)
                     {
                         display.comboMultiplier++;
+                        if(Enemy.enemyCount > 2)
+                        {
+                            display.comboMultiplier++;
+                        }
                     }
                     Console.WriteLine(e.speed);
                     score += (100 * display.comboMultiplier);
@@ -131,9 +135,9 @@ namespace TankGame
         }
         public void Recycle(Enemy enemyR)
         {
-            enemyR.speed += 20f;
-            
+            enemyR.speed += 30f;
 
+            
             
 
             enemyR.enemyHealth = 3;
@@ -151,6 +155,7 @@ namespace TankGame
                 enemyR.direction = Enemy.Direction.down;
                 enemyR.startDir *= -1f;
             }
+            Enemy.enemyCount--;
             game.RemoveSceneObject(enemyR);
         }
     }

@@ -21,11 +21,12 @@ namespace TankGame
         public SpriteObject enemySprite = new SpriteObject();
         Game game;
         public Enemy enemy;
+        public static int enemyCount;
         public float speed = 150f;
         public float maxSpeed = 300f;
         public float rotation = 1f;
         public float startDir = -1f;
-        public static float spawnTime = 5;
+        public static float spawnTime = 8;
         public static float spawnTimeB = 4;
         public static float spawnTimeMax = 20;
         public bool active;

@@ -9,11 +9,11 @@ namespace TankGame
     class EnemyBullet : SceneObject
     {
         public SpriteObject badBulletSprite = new SpriteObject();
-        public float speed = 0.6f;
+        public static float eBSpeed = 0.3f;
         public float duration;
 
         public int bulletDir = 1;
-
+        public static EnemyBullet enemyBullet;
         Enemy enemy;
 
         static Game game;
@@ -45,19 +45,19 @@ namespace TankGame
             {
                 case Enemy.Direction.up:
                     TranslateLocal(0, 
-                        400f * bulletDir * (deltaTime * -speed));
+                        400f * bulletDir * (deltaTime * -eBSpeed));
                     break;
                 case Enemy.Direction.right:
                     TranslateLocal(0,
-                        400f * bulletDir * (deltaTime * -speed));
+                        400f * bulletDir * (deltaTime * -eBSpeed));
                     break;
                 case Enemy.Direction.down:
                     TranslateLocal(0,
-                        400f * bulletDir * (deltaTime * -speed));
+                        400f * bulletDir * (deltaTime * -eBSpeed));
                     break;
                 case Enemy.Direction.left:
                     TranslateLocal(0,
-                        400f * bulletDir * (deltaTime * -speed));
+                        400f * bulletDir * (deltaTime * -eBSpeed));
                     break;
             }
             

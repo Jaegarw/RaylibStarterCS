@@ -39,7 +39,9 @@ namespace TankGame
 
                 if (Tank.playerHealth < Tank.playerMaxHealth)
                 Tank.playerHealth++;
-                if(bonus < 30f)
+                if(EnemyBullet.eBSpeed < 3f)
+                EnemyBullet.eBSpeed += 0.1f;
+                if (bonus < 30f)
                 bonus *= 1.1f;
             }
 
